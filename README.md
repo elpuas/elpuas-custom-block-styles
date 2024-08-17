@@ -1,6 +1,6 @@
 # Custom Block Styles Plugin
 
-This plugin is based on the article “You Might Not Need a Custom Block: The Block Styles API” and is designed to extend the functionality of the WordPress block editor by adding custom block styles.
+This plugin is based on the article [“You Might Not Need a Custom Block: The Block Styles API”](https://elpuas.com/blog/you-might-not-need-a-custom-block-the-block-styles-api/) and is designed to extend the functionality of the WordPress block editor by adding custom block styles.
 
 ## Description
 
