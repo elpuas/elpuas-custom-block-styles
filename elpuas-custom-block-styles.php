@@ -116,3 +116,94 @@ function custom_block_styles() {
 }
 
 add_action('init', __NAMESPACE__ . '\custom_block_styles');
+
+function custom_block_variations( $variations, $block_type ) {
+    if ( 'core/columns' === $block_type->name ) {
+        $variations[] = [
+            'name'        => 'cta-image-button',
+            'title'       => __( 'Image, Button and Text', 'elpuas' ),
+            'description' => __( 'A Call-to-Action with an image and button in the first column, and a long paragraph in the second column.', 'textdomain' ),
+            'icon'        => 'feedback',
+            'attributes'  => [
+                'columns' => 2,
+                'align'   => 'wide',
+                'verticalAlignment' => 'center',
+                'className' => 'is-style-cta-image-button',
+            ],
+            'innerBlocks' => [
+                [
+                    'core/column',
+                    [],
+                    [
+                        [ 'core/image', [] ],
+                        [ 
+                            'core/button', 
+                            [ 
+                                'text' => 'Learn More',
+                                'className' => 'is-style-custom-primary-button'
+                            ] 
+                        ],
+                    ],
+                ],
+                [
+                    'core/column',
+                    [
+                        'verticalAlignment' => 'center',
+                    ],
+                    [
+                        [ 
+                            'core/paragraph', 
+                            [ 
+                                'placeholder' => 'This is a long paragraph explaining the details of your Call-to-Action. Add as much text as needed to convey your message.' 
+                            ] 
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    if ( 'core/query' === $block_type->name ) {
+        $variations[] = [
+            'name'        => 'team-query-grid',
+            'title'       => __( 'Team Members Grid', 'elpuas' ),
+            'description' => __( 'Display team members in a 3-column grid layout.', 'textdomain' ),
+            'icon'        => 'groups',
+            'attributes'  => [
+                'query' => [
+                    'postType' => 'team',
+                    'postsPerPage' => 6,
+                ],
+                'className' => 'is-style-team-query-grid',
+                'align' => 'wide',
+            ],
+            'allowedControls' => [ 'order', 'autor' ],
+            'innerBlocks' => [
+                [
+                    'core/post-template',
+                    [],
+                    [
+                        [ 'core/post-featured-image', [ 'sizeSlug' => 'medium' ] ],
+                        [ 'core/post-title', [ 'level' => 3 ] ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    return $variations;
+}
+
+add_filter( 'get_block_type_variations', __NAMESPACE__ . '\custom_block_variations', 10, 2 );
+
+function custom_team_query_block_styles() {
+    wp_enqueue_block_style(
+        'core/query',
+        [
+            'handle' => 'custom-team-query-grid-style',
+            'src'    => plugin_dir_url( __FILE__ ) . '/team-block.css',
+            'path'   => plugin_dir_path( __FILE__ ) . '/team-block.css',
+        ]
+    );
+}
+add_action( 'after_setup_theme', __NAMESPACE__ . '\custom_team_query_block_styles' );
